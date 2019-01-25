@@ -6,7 +6,7 @@ class User extends Component {
     const { user } = this.props;
     return (
       <div>
-        <li className="list-group-item">{user.name}</li>
+        <li className="list-group-item">{user}</li>
       </div>
     );
   }
