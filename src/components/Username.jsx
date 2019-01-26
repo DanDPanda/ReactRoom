@@ -12,7 +12,7 @@ class Username extends Component {
     )
   };
 
-  getWarningStyle = () => {
+  getInput = () => {
     if (!this.props.warning) {
       return (
         <input
@@ -25,7 +25,8 @@ class Username extends Component {
       return (
         <input
           // col-sm-2 col-form-label text-danger
-          className="form-control mr-sm-2 text-danger col-form-label"
+          className="form-control mr-sm-2"
+          style={this.warningStyle()}
           placeholder="Submit Username"
           onChange={event => this.setState({ value: event.target.value })}
         />
@@ -33,10 +34,9 @@ class Username extends Component {
     }
   };
 
-  render() {
-    return (
-      <div className="form-inline">
-        {this.getWarningStyle()}
+  getButton = () => {
+    if (!this.props.warning) {
+      return (
         <button
           className="btn btn-outline-info my-2 my-sm-0"
           type="submit"
@@ -46,6 +46,35 @@ class Username extends Component {
         >
           Submit
         </button>
+      );
+    } else {
+      return (
+        <button
+          className="btn btn-outline-info my-2 my-sm-0"
+          type="submit"
+          style={this.warningStyle()}
+          onClick={() => {
+            this.props.submitUsername(this.state.value);
+          }}
+        >
+          Submit
+        </button>
+      );
+    }
+  };
+
+  warningStyle = () => {
+    return {
+      color: "red",
+      borderColor: "red"
+    };
+  };
+
+  render() {
+    return (
+      <div className="form-inline">
+        {this.getInput()}
+        {this.getButton()}
       </div>
     );
   }
