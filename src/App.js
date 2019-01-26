@@ -17,10 +17,12 @@ class App extends Component {
     this.socket.on("update-msg", socket => {
       this.setState({ users: socket.clients });
     });
+
+    this.socket.emit("get-list");
   }
 
   submitUsername = username => {
-    this.socket.emit("submit_username", { username: username });
+    this.socket.emit("submit-username", { username: username });
   };
 
   render() {

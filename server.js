@@ -11,7 +11,11 @@ console.log("Listening to port", port);
 
 // On conncection
 io.on("connection", socket => {
-  socket.on("submit_username", data => {
+  socket.on("get-list", () => {
+    socket.emit("update-msg", { clients: clients });
+  });
+
+  socket.on("submit-username", data => {
     socket.username = data.username;
     clients.push(data.username);
     sockets.push(socket);
