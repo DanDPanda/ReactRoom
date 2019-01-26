@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Username from "./Username";
 
 class Header extends Component {
   state = {
@@ -14,20 +15,7 @@ class Header extends Component {
         >
           Game Room
         </p>
-        <div className="form-inline">
-          <input
-            className="form-control mr-sm-2"
-            placeholder="Submit Username"
-            onChange={event => this.setState({ value: event.target.value })}
-          />
-          <button
-            className="btn btn-outline-info my-2 my-sm-0"
-            type="submit"
-            onClick={() => this.props.submitUsername(this.state.value)}
-          >
-            Submit
-          </button>
-        </div>
+        <Username submitUsername={this.props.submitUsername} />
       </nav>
     );
   }
