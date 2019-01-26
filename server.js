@@ -18,12 +18,17 @@ io.on("connection", socket => {
   });
 
   socket.on("submit-username", data => {
-    socket.username = data.username;
-    clients.push(data.username);
-    console.log(socket.username + " has joined the room.");
-    sockets.forEach(sock => {
-      sock.emit("update-msg", { clients: clients });
-    });
+    if (clients.indexOf(data.username) < 0) {
+      socket.username = data.username;
+      clients.push(data.username);
+      socket.emit("username-result", { valid: true });
+      console.log(socket.username + " has joined the room.");
+      sockets.forEach(sock => {
+        sock.emit("update-msg", { clients: clients });
+      });
+    } else {
+      socket.emit("username-result", { valid: false });
+    }
   });
 
   socket.on("disconnect", () => {

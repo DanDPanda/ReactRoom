@@ -1,12 +1,41 @@
 import React, { Component } from "react";
+import Username from "./Username";
 
 class Header extends Component {
-  state = {};
+  constructor(props) {
+    super(props);
 
-  removeField = () => {
-    if (this.state.submitted) {
-      this.setState({ form: null });
-    }
+    this.state = {
+      form: (
+        <Username
+          submitUsername={this.submitUsername}
+          socket={this.props.socket}
+          warning={false}
+        />
+      )
+    };
+
+    this.props.socket.on("username-result", sock => {
+      if (sock.valid) {
+        this.setState({ form: null });
+      } else {
+        alert("Username in use");
+        this.setState({
+          form: (
+            <Username
+              submitUsername={this.submitUsername}
+              socket={this.props.socket}
+              warning={true}
+            />
+          )
+        });
+        console.log("Username in use");
+      }
+    });
+  }
+
+  submitUsername = username => {
+    this.props.socket.emit("submit-username", { username: username });
   };
 
   render() {
@@ -18,7 +47,7 @@ class Header extends Component {
         >
           Game Room
         </p>
-        {this.props.form}
+        {this.state.form}
       </nav>
     );
   }
