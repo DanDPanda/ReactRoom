@@ -2,8 +2,12 @@ import React, { Component } from "react";
 import Username from "./Username";
 
 class Header extends Component {
-  state = {
-    value: ""
+  state = {};
+
+  removeField = () => {
+    if (this.state.submitted) {
+      this.setState({ form: null });
+    }
   };
 
   render() {
@@ -15,7 +19,7 @@ class Header extends Component {
         >
           Game Room
         </p>
-        <Username submitUsername={this.props.submitUsername} />
+        {this.props.form}
       </nav>
     );
   }

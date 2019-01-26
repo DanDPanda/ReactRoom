@@ -3,13 +3,15 @@ import "./App.css";
 import Header from "./components/Header";
 import Users from "./components/Users";
 import openSocket from "socket.io-client";
+import Username from "./components/Username";
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      users: []
+      users: [],
+      form: <Username submitUsername={this.submitUsername} />
     };
 
     this.socket = openSocket("http://localhost:8000");
@@ -23,12 +25,13 @@ class App extends Component {
 
   submitUsername = username => {
     this.socket.emit("submit-username", { username: username });
+    this.setState({ form: null });
   };
 
   render() {
     return (
       <React.Fragment>
-        <Header submitUsername={this.submitUsername} />
+        <Header submitUsername={this.submitUsername} form={this.state.form} />
         <Users users={this.state.users} />
       </React.Fragment>
     );
