@@ -1,7 +1,7 @@
 const io = require("socket.io")();
 
 // Clients
-var clients = ["Dan", "Man"];
+var clients = [];
 var sockets = [];
 
 // Ports
@@ -11,16 +11,15 @@ console.log("Listening to port", port);
 
 // On conncection
 io.on("connection", socket => {
-  // socket.on("submit_username", data => {
-  // socket.username = data.username;
-  // clients.push(data.username);
-  // sockets.push(socket);
-  // console.log(socket.username + " has joined the room.");
-  // sockets.forEach(sock => {
-  // console.log("Connection");
-  socket.emit("update-msg", { clients: clients });
-  // });
-  // });
+  socket.on("submit_username", data => {
+    socket.username = data.username;
+    clients.push(data.username);
+    sockets.push(socket);
+    console.log(socket.username + " has joined the room.");
+    sockets.forEach(sock => {
+      sock.emit("update-msg", { clients: clients });
+    });
+  });
 
   socket.on("disconnect", () => {
     if (socket.username != null) {

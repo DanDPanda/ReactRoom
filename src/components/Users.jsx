@@ -10,7 +10,7 @@ class Users extends Component {
       <div>
         <ul className="list-group">
           {users.map(user => (
-            <User user={user} />
+            <User key={user} user={user} />
           ))}
         </ul>
       </div>

@@ -5,23 +5,28 @@ import Users from "./components/Users";
 import openSocket from "socket.io-client";
 
 class App extends Component {
-  state = {
-    users: []
-  };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    const socket = openSocket("http://localhost:8000");
-    socket.on(
-      "update-msg",
-      // data => console.log(data.clients)
-      data => this.setState({ users: data.clients })
-    );
+    this.state = {
+      users: []
+    };
+
+    this.socket = openSocket("http://localhost:8000");
+
+    this.socket.on("update-msg", socket => {
+      this.setState({ users: socket.clients });
+    });
   }
+
+  submitUsername = username => {
+    this.socket.emit("submit_username", { username: username });
+  };
 
   render() {
     return (
       <React.Fragment>
-        <Header />
+        <Header submitUsername={this.submitUsername} />
         <Users users={this.state.users} />
       </React.Fragment>
     );
