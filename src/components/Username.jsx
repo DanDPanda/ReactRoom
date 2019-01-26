@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 
 class Username extends Component {
-  state = {};
+  state = {
+    value: ""
+  };
   render() {
     return (
       <div className="form-inline">

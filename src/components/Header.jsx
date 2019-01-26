@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Username from "./Username";
 
 class Header extends Component {
   state = {};

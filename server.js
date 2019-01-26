@@ -11,6 +11,8 @@ console.log("Listening to port", port);
 
 // On conncection
 io.on("connection", socket => {
+  sockets.push(socket);
+
   socket.on("get-list", () => {
     socket.emit("update-msg", { clients: clients });
   });
@@ -18,7 +20,6 @@ io.on("connection", socket => {
   socket.on("submit-username", data => {
     socket.username = data.username;
     clients.push(data.username);
-    sockets.push(socket);
     console.log(socket.username + " has joined the room.");
     sockets.forEach(sock => {
       sock.emit("update-msg", { clients: clients });
@@ -33,7 +34,7 @@ io.on("connection", socket => {
       clients.splice(i, 1);
       sockets.splice(j, i);
       sockets.forEach(sock => {
-        sock.emit("update-msg", { data: clients });
+        sock.emit("update-msg", { clients: clients });
       });
     }
   });

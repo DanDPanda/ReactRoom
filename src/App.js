@@ -16,8 +16,8 @@ class App extends Component {
 
     this.socket = openSocket("http://localhost:8000");
 
-    this.socket.on("update-msg", socket => {
-      this.setState({ users: socket.clients });
+    this.socket.on("update-msg", sock => {
+      this.setState({ users: sock.clients });
     });
 
     this.socket.emit("get-list");
