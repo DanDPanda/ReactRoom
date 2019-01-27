@@ -19,7 +19,6 @@ class Header extends Component {
       if (sock.valid) {
         this.setState({ form: null });
       } else {
-        alert("Username in use");
         this.setState({
           form: (
             <Username
