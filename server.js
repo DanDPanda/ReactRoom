@@ -1,13 +1,27 @@
-const io = require("socket.io")();
+const express = require("express");
+const app = express();
 
 // Clients
 var clients = [];
 var sockets = [];
 
+// Variables
+var inProgress = false;
+
 // Ports
 const port = 8000;
-io.listen(port);
+const server = app.listen(port);
+const io = require("socket.io")(server);
 console.log("Listening to port", port);
+
+// Routes
+app.get("/", (req, res) => {
+  sockets.forEach(sock => {
+    inProgress = true;
+    sock.emit("game-start", { clients: clients, inProgress: inProgress });
+  });
+  res.send("Game has started.");
+});
 
 // On conncection
 io.on("connection", socket => {
@@ -15,6 +29,10 @@ io.on("connection", socket => {
 
   socket.on("get-list", () => {
     socket.emit("update-msg", { clients: clients });
+  });
+
+  socket.on("get-progress", () => {
+    socket.emit("game-start", { clients: clients, inProgress: inProgress });
   });
 
   socket.on("submit-username", data => {

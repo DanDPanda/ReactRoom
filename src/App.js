@@ -9,16 +9,16 @@ class App extends Component {
     super(props);
 
     this.state = {
-      users: []
+      inProgress: false
     };
 
-    this.socket = openSocket("http://localhost:8000");
+    this.socket = openSocket("http://192.168.0.13:8000");
 
-    this.socket.on("update-msg", sock => {
-      this.setState({ users: sock.clients });
+    this.socket.on("game-start", sock => {
+      this.setState({ inProgress: sock.inProgress });
     });
 
-    this.socket.emit("get-list");
+    this.socket.emit("get-progress");
   }
 
   render() {
@@ -26,10 +26,10 @@ class App extends Component {
       <React.Fragment>
         <Header
           submitUsername={this.submitUsername}
-          form={this.state.form}
           socket={this.socket}
+          inProgress={this.state.inProgress}
         />
-        <Users users={this.state.users} />
+        <Users socket={this.socket} inProgress={this.state.inProgress} />
       </React.Fragment>
     );
   }

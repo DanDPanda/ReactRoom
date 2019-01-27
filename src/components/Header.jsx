@@ -6,32 +6,29 @@ class Header extends Component {
     super(props);
 
     this.state = {
-      form: (
+      valid: false
+    };
+
+    this.props.socket.on("username-result", sock => {
+      if (sock.valid) {
+        this.setState({ valid: true });
+      }
+    });
+  }
+
+  getForm = () => {
+    if (this.state.valid || this.props.inProgress) {
+      return null;
+    } else {
+      return (
         <Username
           submitUsername={this.submitUsername}
           socket={this.props.socket}
           warning={false}
         />
-      )
-    };
-
-    this.props.socket.on("username-result", sock => {
-      if (sock.valid) {
-        this.setState({ form: null });
-      } else {
-        this.setState({
-          form: (
-            <Username
-              submitUsername={this.submitUsername}
-              socket={this.props.socket}
-              warning={true}
-            />
-          )
-        });
-        console.log("Username in use");
-      }
-    });
-  }
+      );
+    }
+  };
 
   submitUsername = username => {
     this.props.socket.emit("submit-username", { username: username });
@@ -46,7 +43,7 @@ class Header extends Component {
         >
           Game Room
         </p>
-        {this.state.form}
+        {this.getForm()}
       </nav>
     );
   }
