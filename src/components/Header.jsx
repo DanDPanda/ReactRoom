@@ -22,8 +22,10 @@ class Header extends Component {
   }
 
   getForm = () => {
-    if (this.state.valid || this.props.inProgress) {
-      return <Username username={this.state.username} />;
+    if (this.state.valid) {
+      return <Username username={this.state.username} valid={true} />;
+    } else if (this.props.inProgress) {
+      return <Username username="" valid={false} />;
     } else {
       return (
         <UsernameForm
