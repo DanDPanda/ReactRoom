@@ -14,30 +14,66 @@ const server = app.listen(port);
 const io = require("socket.io")(server);
 console.log("Listening to port", port);
 
+// Functions
+function shuffleArray(array) {
+  var currentIndex = array.length,
+    temporaryValue,
+    randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+}
+
+function chooseRoles(array) {
+  var mafias = Math.ceil(array.length / 6);
+  var j = 0;
+  for (j = 0; j < mafias; j++) {
+    clients[j].role = "Mafia";
+  }
+  clients[j].role = "Nurse";
+  clients[j + 1].role = "Detective";
+  for (var i = j + 2; i < clients.length; i++) {
+    clients[i].role = "Civilian";
+  }
+}
+
 // Routes
 app.get("/", (req, res) => {
   res.send("Hello World.");
 });
 
 app.get("/start", (req, res) => {
-  inProgress = true;
-  clients[0].role = "Mafia";
-  clients[1].role = "Nurse";
-  clients[2].role = "Detective";
-  sockets.forEach(sock => {
-    for (var i = 0; i < clients.length; i++) {
-      if (sock.id == clients[i].socket) {
-        sock.emit("game-start", {
-          clients: clients,
-          inProgress: inProgress,
-          role: clients[i].role
-        });
-        i = clients.length;
+  if (clients.length > 3) {
+    inProgress = true;
+    shuffleArray(clients);
+    chooseRoles(clients);
+    sockets.forEach(sock => {
+      for (var i = 0; i < clients.length; i++) {
+        if (sock.id == clients[i].socket) {
+          sock.emit("game-start", {
+            clients: clients,
+            inProgress: inProgress,
+            role: clients[i].role
+          });
+          i = clients.length;
+        }
       }
-    }
-  });
-  console.log("Game has started.");
-  res.send("Game has started.");
+    });
+    console.log("Game has started.");
+    res.send("Game has started.");
+  } else {
+    console.log("Not enough players to start.");
+    res.send("Not enough players to start.");
+  }
 });
 
 app.get("/restart", (req, res) => {
@@ -49,6 +85,7 @@ app.get("/restart", (req, res) => {
       role: ""
     });
   });
+  console.log("Game has ended.");
   res.send("Game has ended.");
 });
 
@@ -65,7 +102,10 @@ io.on("connection", socket => {
   });
 
   socket.on("submit-username", data => {
-    if (clients.indexOf(data.username) < 0 && data.username !== "") {
+    if (
+      clients.filter(c => c.username === data.username).length === 0 &&
+      data.username !== ""
+    ) {
       socket.username = data.username;
       clients.push({ username: data.username, role: "", socket: socket.id });
       socket.emit("username-result", { valid: true });
@@ -81,7 +121,7 @@ io.on("connection", socket => {
   socket.on("disconnect", () => {
     if (socket.username != null) {
       console.log(socket.username + " has left the room.");
-      var i = clients.indexOf(socket.username);
+      var i = clients.indexOf(clients.filter(c => c.socket === socket.id)[0]);
       var j = sockets.indexOf(socket);
       clients.splice(i, 1);
       sockets.splice(j, i);
