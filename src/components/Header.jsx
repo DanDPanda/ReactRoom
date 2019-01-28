@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import UsernameForm from "./UsernameForm";
 import Username from "./Username";
 
 class Header extends Component {
@@ -6,31 +7,36 @@ class Header extends Component {
     super(props);
 
     this.state = {
-      valid: false
+      valid: false,
+      username: "",
+      warning: false
     };
 
     this.props.socket.on("username-result", sock => {
       if (sock.valid) {
         this.setState({ valid: true });
+      } else {
+        this.setState({ warning: true });
       }
     });
   }
 
   getForm = () => {
     if (this.state.valid || this.props.inProgress) {
-      return null;
+      return <Username username={this.state.username} />;
     } else {
       return (
-        <Username
+        <UsernameForm
           submitUsername={this.submitUsername}
           socket={this.props.socket}
-          warning={false}
+          warning={this.state.warning}
         />
       );
     }
   };
 
   submitUsername = username => {
+    this.setState({ username: username });
     this.props.socket.emit("submit-username", { username: username });
   };
 
