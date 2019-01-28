@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import UsernameForm from "./UsernameForm";
-import Username from "./Username";
+import UsernameForm from "./HeaderChildren/UsernameForm";
+import Username from "./HeaderChildren/Username";
 
 class Header extends Component {
   constructor(props) {

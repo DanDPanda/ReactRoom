@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import "./App.css";
-import Header from "./components/Header";
-import Display from "./components/Display";
+import Header from "./components/Header/Header";
+import Display from "./components/Display/Display";
 import openSocket from "socket.io-client";
 
 class App extends Component {
@@ -15,7 +14,7 @@ class App extends Component {
 
     this.socket = openSocket("http://192.168.0.13:8000");
 
-    this.socket.on("game-start", sock => {
+    this.socket.on("mafia-start", sock => {
       this.setState({ inProgress: sock.inProgress, role: sock.role });
     });
 
@@ -29,11 +28,7 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <Header
-          submitUsername={this.submitUsername}
-          socket={this.socket}
-          inProgress={this.state.inProgress}
-        />
+        <Header socket={this.socket} inProgress={this.state.inProgress} />
         <Display
           socket={this.socket}
           inProgress={this.state.inProgress}
