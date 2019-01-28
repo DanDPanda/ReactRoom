@@ -18,7 +18,7 @@ class Users extends Component {
 
   getProgress = () => {
     if (this.props.inProgress) {
-      return null;
+      return <p>YOU ARE {this.props.role}</p>;
     } else {
       return this.state.users.map(user => (
         <User key={user.username} user={user.username} />

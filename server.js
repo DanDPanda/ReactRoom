@@ -43,7 +43,11 @@ app.get("/start", (req, res) => {
 app.get("/restart", (req, res) => {
   inProgress = false;
   sockets.forEach(sock => {
-    sock.emit("restart", { clients: clients, inProgress: inProgress });
+    sock.emit("restart", {
+      clients: clients,
+      inProgress: inProgress,
+      role: ""
+    });
   });
   res.send("Game has ended.");
 });

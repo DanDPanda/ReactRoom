@@ -9,18 +9,18 @@ class App extends Component {
     super(props);
 
     this.state = {
-      inProgress: false
+      inProgress: false,
+      role: ""
     };
 
     this.socket = openSocket("http://192.168.0.13:8000");
 
     this.socket.on("game-start", sock => {
-      // console.log(sock.role);
-      this.setState({ inProgress: sock.inProgress });
+      this.setState({ inProgress: sock.inProgress, role: sock.role });
     });
 
     this.socket.on("restart", sock => {
-      this.setState({ inProgress: sock.inProgress });
+      this.setState({ inProgress: sock.inProgress, role: sock.role });
     });
 
     this.socket.emit("get-progress");
@@ -34,7 +34,11 @@ class App extends Component {
           socket={this.socket}
           inProgress={this.state.inProgress}
         />
-        <Users socket={this.socket} inProgress={this.state.inProgress} />
+        <Users
+          socket={this.socket}
+          inProgress={this.state.inProgress}
+          role={this.state.role}
+        />
       </React.Fragment>
     );
   }
