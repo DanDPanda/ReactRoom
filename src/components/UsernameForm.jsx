@@ -21,7 +21,7 @@ class UsernameForm extends Component {
     };
     if (this.props.warning) {
       return (
-        <div class="alert alert-danger" role="alert" style={rightMargin}>
+        <div className="alert alert-danger" role="alert" style={rightMargin}>
           Username is already in use!
         </div>
       );

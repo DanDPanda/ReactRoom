@@ -16,11 +16,36 @@ console.log("Listening to port", port);
 
 // Routes
 app.get("/", (req, res) => {
+  res.send("Hello World.");
+});
+
+app.get("/start", (req, res) => {
+  inProgress = true;
+  clients[0].role = "Mafia";
+  clients[1].role = "Nurse";
+  clients[2].role = "Detective";
   sockets.forEach(sock => {
-    inProgress = true;
-    sock.emit("game-start", { clients: clients, inProgress: inProgress });
+    for (var i = 0; i < clients.length; i++) {
+      if (sock.id == clients[i].socket) {
+        sock.emit("game-start", {
+          clients: clients,
+          inProgress: inProgress,
+          role: clients[i].role
+        });
+        i = clients.length;
+      }
+    }
   });
+  console.log("Game has started.");
   res.send("Game has started.");
+});
+
+app.get("/restart", (req, res) => {
+  inProgress = false;
+  sockets.forEach(sock => {
+    sock.emit("restart", { clients: clients, inProgress: inProgress });
+  });
+  res.send("Game has ended.");
 });
 
 // On conncection
@@ -36,9 +61,9 @@ io.on("connection", socket => {
   });
 
   socket.on("submit-username", data => {
-    if (clients.indexOf(data.username) < 0) {
+    if (clients.indexOf(data.username) < 0 && data.username !== "") {
       socket.username = data.username;
-      clients.push(data.username);
+      clients.push({ username: data.username, role: "", socket: socket.id });
       socket.emit("username-result", { valid: true });
       console.log(socket.username + " has joined the room.");
       sockets.forEach(sock => {

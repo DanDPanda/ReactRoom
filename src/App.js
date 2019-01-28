@@ -15,6 +15,11 @@ class App extends Component {
     this.socket = openSocket("http://192.168.0.13:8000");
 
     this.socket.on("game-start", sock => {
+      // console.log(sock.role);
+      this.setState({ inProgress: sock.inProgress });
+    });
+
+    this.socket.on("restart", sock => {
       this.setState({ inProgress: sock.inProgress });
     });
 

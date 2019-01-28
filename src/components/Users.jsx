@@ -13,21 +13,23 @@ class Users extends Component {
       this.setState({ users: sock.clients });
     });
 
-    this.props.socket.on("game-start", sock => {
-      this.setState({ users: [] });
-    });
-
     this.props.socket.emit("get-list");
   }
+
+  getProgress = () => {
+    if (this.props.inProgress) {
+      return null;
+    } else {
+      return this.state.users.map(user => (
+        <User key={user.username} user={user.username} />
+      ));
+    }
+  };
 
   render() {
     return (
       <div>
-        <ul className="list-group">
-          {this.state.users.map(user => (
-            <User key={user} user={user} />
-          ))}
-        </ul>
+        <ul className="list-group">{this.getProgress()}</ul>
       </div>
     );
   }
