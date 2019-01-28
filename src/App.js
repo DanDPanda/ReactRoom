@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import Header from "./components/Header";
-import Users from "./components/Users";
+import Display from "./components/Display";
 import openSocket from "socket.io-client";
 
 class App extends Component {
@@ -34,7 +34,7 @@ class App extends Component {
           socket={this.socket}
           inProgress={this.state.inProgress}
         />
-        <Users
+        <Display
           socket={this.socket}
           inProgress={this.state.inProgress}
           role={this.state.role}

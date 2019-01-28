@@ -34,7 +34,7 @@ function shuffleArray(array) {
 }
 
 function chooseRoles(array) {
-  var mafias = Math.ceil(array.length / 6);
+  var mafias = Math.ceil(array.length / 5);
   var j = 0;
   for (j = 0; j < mafias; j++) {
     clients[j].role = "Mafia";
@@ -51,21 +51,29 @@ app.get("/", (req, res) => {
   res.send("Hello World.");
 });
 
-app.get("/start", (req, res) => {
+app.get("/startMafia", (req, res) => {
   if (clients.length > 3) {
     inProgress = true;
     shuffleArray(clients);
     chooseRoles(clients);
     sockets.forEach(sock => {
+      var found = false;
       for (var i = 0; i < clients.length; i++) {
-        if (sock.id == clients[i].socket) {
+        if (sock.id === clients[i].socket) {
           sock.emit("game-start", {
             clients: clients,
             inProgress: inProgress,
             role: clients[i].role
           });
+          found = true;
           i = clients.length;
         }
+      }
+      if (found === false) {
+        sock.emit("game-start", {
+          clients: clients,
+          inProgress: inProgress
+        });
       }
     });
     console.log("Game has started.");

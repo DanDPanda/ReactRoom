@@ -1,6 +1,7 @@
 {
   "name": "react-room",
   "version": "0.1.0",
+  "main": "server.js",
   "private": true,
   "dependencies": {
     "bootstrap": "^4.2.1",
