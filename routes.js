@@ -57,7 +57,7 @@ module.exports = function(app, clients, sockets, inProgress) {
         }
         if (found === false) {
           sock.emit("mafia-start", {
-            role: "",
+            role: null,
             inProgress: inProgress,
             additional: clients,
             game: "mafia"
