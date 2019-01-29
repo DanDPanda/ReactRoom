@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 
 class Role extends Component {
-  state = {};
-
   getRole = () => {
     const roleStyle = {
       textAlign: "center",
-      marginTop: "100px"
+      marginTop: "100px",
+      marginBottom: "100px"
     };
     if (this.props.role == null) {
       return (

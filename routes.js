@@ -46,9 +46,10 @@ module.exports = function(app, clients, sockets, inProgress) {
         for (var i = 0; i < clients.length; i++) {
           if (sock.id === clients[i].socket) {
             sock.emit("mafia-start", {
-              clients: clients,
               inProgress: inProgress,
-              role: clients[i].role
+              role: clients[i].role,
+              game: "mafia",
+              additional: clients
             });
             found = true;
             i = clients.length;
@@ -56,8 +57,10 @@ module.exports = function(app, clients, sockets, inProgress) {
         }
         if (found === false) {
           sock.emit("mafia-start", {
-            clients: clients,
-            inProgress: inProgress
+            role: "",
+            inProgress: inProgress,
+            additional: clients,
+            game: "mafia"
           });
         }
       });
@@ -75,7 +78,9 @@ module.exports = function(app, clients, sockets, inProgress) {
       sock.emit("restart", {
         clients: clients,
         inProgress: inProgress,
-        role: ""
+        role: "",
+        additional: null,
+        game: ""
       });
     });
     console.log("Game has ended.");

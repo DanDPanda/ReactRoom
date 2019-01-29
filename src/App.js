@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Header from "./components/Header/Header";
 import Display from "./components/Display/Display";
+import Additional from "./components/Additional/Additional";
 import openSocket from "socket.io-client";
 
 class App extends Component {
@@ -9,17 +10,29 @@ class App extends Component {
 
     this.state = {
       inProgress: false,
-      role: ""
+      role: "",
+      additional: null,
+      game: ""
     };
 
-    this.socket = openSocket("http://192.168.0.13:8000");
+    this.socket = openSocket("http://localhost:8000");
 
     this.socket.on("mafia-start", sock => {
-      this.setState({ inProgress: sock.inProgress, role: sock.role });
+      this.setState({
+        inProgress: sock.inProgress,
+        role: sock.role,
+        additional: sock.additional,
+        game: sock.game
+      });
     });
 
     this.socket.on("restart", sock => {
-      this.setState({ inProgress: sock.inProgress, role: sock.role });
+      this.setState({
+        inProgress: sock.inProgress,
+        role: sock.role,
+        additional: sock.additional,
+        game: sock.game
+      });
     });
 
     this.socket.emit("get-progress");
@@ -33,6 +46,11 @@ class App extends Component {
           socket={this.socket}
           inProgress={this.state.inProgress}
           role={this.state.role}
+        />
+        <Additional
+          additional={this.state.additional}
+          inProgress={this.state.inProgress}
+          game={this.state.game}
         />
       </React.Fragment>
     );

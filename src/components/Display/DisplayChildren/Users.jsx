@@ -18,7 +18,7 @@ class Users extends Component {
 
   render() {
     return this.state.users.map(user => (
-      <ul className="list-group">
+      <ul key={user.username} className="list-group">
         <User key={user.username} user={user.username} />
       </ul>
     ));
