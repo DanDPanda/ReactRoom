@@ -19,7 +19,7 @@ class Username extends Component {
     } else {
       return (
         <p style={usernameStyle} className="btn btn-outline-info my-2 my-sm-0">
-          Game is currently in session!
+          Submit a username after the game ends
         </p>
       );
     }
