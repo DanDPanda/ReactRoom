@@ -10,10 +10,15 @@ class Users extends Component {
     };
 
     this.props.socket.on("update-msg", sock => {
+      console.log(this.state.users);
       this.setState({ users: sock.clients });
     });
 
     this.props.socket.emit("get-list");
+  }
+
+  componentWillUnmount() {
+    this.props.socket.removeAllListeners("update-msg");
   }
 
   render() {

@@ -12,7 +12,7 @@ class Display extends Component {
   };
 
   render() {
-    return <div>{this.getProgress()}</div>;
+    return this.getProgress();
   }
 }
 
