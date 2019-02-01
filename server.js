@@ -5,8 +5,8 @@ const app = express();
 var clients = [];
 var sockets = [];
 
-// Variables
-var inProgress = false;
+// Spyfall Locations
+var locations = ["School", "Hospital", "Mountain"];
 
 // Ports
 const port = 8000;
@@ -14,7 +14,7 @@ const server = app.listen(port);
 const io = require("socket.io")(server);
 console.log("Listening to port", port);
 
-require("./routes")(app, clients, sockets, inProgress);
+require("./routes").func(app, clients, sockets, locations);
 
 // On conncection
 io.on("connection", socket => {
@@ -25,7 +25,19 @@ io.on("connection", socket => {
   });
 
   socket.on("get-progress", () => {
-    socket.emit("game-start", { clients: clients, inProgress: inProgress });
+    if (require("./routes").getGame() == "Mafia") {
+      socket.emit("game-start", {
+        inProgress: require("./routes").getProgress(),
+        game: "Mafia",
+        additional: clients
+      });
+    } else {
+      socket.emit("game-start", {
+        inProgress: require("./routes").getProgress(),
+        game: "Spyfall",
+        additional: locations
+      });
+    }
   });
 
   socket.on("submit-username", data => {

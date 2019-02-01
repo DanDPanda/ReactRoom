@@ -26,10 +26,28 @@ class App extends Component {
       });
     });
 
+    this.socket.on("spyfall-start", sock => {
+      this.setState({
+        inProgress: sock.inProgress,
+        role: sock.role,
+        additional: sock.additional,
+        game: sock.game
+      });
+    });
+
     this.socket.on("restart", sock => {
       this.setState({
         inProgress: sock.inProgress,
         role: sock.role,
+        additional: sock.additional,
+        game: sock.game
+      });
+    });
+
+    this.socket.on("game-start", sock => {
+      this.setState({
+        inProgress: sock.inProgress,
+        role: null,
         additional: sock.additional,
         game: sock.game
       });
