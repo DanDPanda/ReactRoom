@@ -6,7 +6,37 @@ var clients = [];
 var sockets = [];
 
 // Spyfall Locations
-var locations = ["School", "Hospital", "Mountain"];
+var locations = [
+  "School",
+  "Hospital",
+  "Mountain",
+  "Beach",
+  "Theater",
+  "Casino",
+  "Circus",
+  "Bank",
+  "Spa",
+  "Hotel",
+  "Restaurant",
+  "Supermarket",
+  "Train Station",
+  "Embassy",
+  "Military Base",
+  "Police Station",
+  "School",
+  "University",
+  "Airplane",
+  "Cruise",
+  "Train",
+  "Submarine",
+  "Cathedral",
+  "Corporate Party",
+  "Movie Studio",
+  "Crusader Army",
+  "Pirate Ship",
+  "Polar Station",
+  "Space Station"
+];
 
 // Ports
 const port = 8000;
