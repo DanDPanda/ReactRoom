@@ -5,8 +5,9 @@ import Location from "./AdditionalChildren/Location";
 class Additional extends Component {
   getProgress = () => {
     const listStyle = {
-      maxWidth: "75%",
-      margin: "auto"
+      maxWidth: "25%",
+      margin: "auto",
+      textAlig: "center"
     };
     if (this.props.game === "Mafia" && this.props.inProgress) {
       return this.props.additional.map(user => (

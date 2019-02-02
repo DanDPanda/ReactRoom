@@ -22,8 +22,9 @@ class Users extends Component {
 
   render() {
     const listStyle = {
-      maxWidth: "75%",
-      margin: "auto"
+      maxWidth: "25%",
+      margin: "auto",
+      textAlign: "center"
     };
     return this.state.users.map(user => (
       <ul key={user.username} className="list-group" style={listStyle}>

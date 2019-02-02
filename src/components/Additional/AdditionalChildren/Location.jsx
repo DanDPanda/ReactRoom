@@ -1,9 +1,15 @@
 import React, { Component } from "react";
 
 class Location extends Component {
-  state = {};
   render() {
-    return <li className="list-group-item">{this.props.location}</li>;
+    const locationStyle = {
+      marginTop: "5px"
+    };
+    return (
+      <li className="list-group-item" style={locationStyle}>
+        {this.props.location}
+      </li>
+    );
   }
 }
 

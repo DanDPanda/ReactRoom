@@ -2,7 +2,14 @@ import React, { Component } from "react";
 
 class User extends Component {
   render() {
-    return <li className="list-group-item">{this.props.user}</li>;
+    const userStyle = {
+      marginTop: "5px"
+    };
+    return (
+      <li className="list-group-item" style={userStyle}>
+        {this.props.user}
+      </li>
+    );
   }
 }
 
