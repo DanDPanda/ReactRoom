@@ -42,6 +42,28 @@ module.exports = {
       );
     }
 
+    function sendToSockets(res, add) {
+      sockets.forEach(sock => {
+        var temp = clients.filter((a, i) => a.socket === sock.id);
+        temp.length === 1
+          ? sock.emit("game", {
+              inProgress: inProgress,
+              role: temp[0].role,
+              game: currentGame,
+              additional: add
+            })
+          : sock.emit("game", {
+              role: null,
+              inProgress: inProgress,
+              additional: add,
+              game: currentGame
+            });
+      });
+
+      console.log("Game has started.");
+      res.send("Game has started.");
+    }
+
     // Routes
     app.get("/", (req, res) => {
       res.send("Hello World.");
@@ -56,31 +78,7 @@ module.exports = {
         currentGame = "Mafia";
         shuffleArray(clients);
         chooseRolesMafia(clients);
-        sockets.forEach(sock => {
-          var found = false;
-          for (var i = 0; i < clients.length; i++) {
-            if (sock.id === clients[i].socket) {
-              sock.emit("mafia-start", {
-                inProgress: inProgress,
-                role: clients[i].role,
-                game: currentGame,
-                additional: clients
-              });
-              found = true;
-              i = clients.length;
-            }
-          }
-          if (found === false) {
-            sock.emit("mafia-start", {
-              role: null,
-              inProgress: inProgress,
-              additional: clients,
-              game: currentGame
-            });
-          }
-        });
-        console.log("Game has started.");
-        res.send("Game has started.");
+        sendToSockets(res, clients);
       } else {
         console.log("Not enough players to start.");
         res.send("Not enough players to start.");
@@ -96,31 +94,7 @@ module.exports = {
         currentGame = "Spyfall";
         shuffleArray(clients);
         chooseRolesSpyfall(clients);
-        sockets.forEach(sock => {
-          var found = false;
-          for (var i = 0; i < clients.length; i++) {
-            if (sock.id === clients[i].socket) {
-              sock.emit("spyfall-start", {
-                inProgress: inProgress,
-                role: clients[i].role,
-                game: currentGame,
-                additional: locations
-              });
-              found = true;
-              i = clients.length;
-            }
-          }
-          if (found === false) {
-            sock.emit("spyfall-start", {
-              role: null,
-              inProgress: inProgress,
-              additional: locations,
-              game: currentGame
-            });
-          }
-        });
-        console.log("Game has started.");
-        res.send("Game has started.");
+        sendToSockets(res, locations);
       } else {
         console.log("Not enough players to start.");
         res.send("Not enough players to start.");
@@ -128,18 +102,24 @@ module.exports = {
     });
 
     app.get("/restart", (req, res) => {
-      inProgress = false;
-      sockets.forEach(sock => {
-        sock.emit("restart", {
-          clients: clients,
-          inProgress: inProgress,
-          role: "",
-          additional: null,
-          game: ""
+      if (inProgress) {
+        inProgress = false;
+        currentGame = null;
+        sockets.forEach(sock => {
+          sock.emit("game", {
+            clients: clients,
+            inProgress: inProgress,
+            role: null,
+            additional: null,
+            game: currentGame
+          });
         });
-      });
-      console.log("Game has ended.");
-      res.send("Game has ended.");
+        console.log("Game has ended.");
+        res.send("Game has ended.");
+      } else {
+        console.log("There is no current game.");
+        res.send("There is no current game.");
+      }
     });
   },
   getProgress: function() {

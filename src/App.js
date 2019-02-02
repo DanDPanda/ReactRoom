@@ -10,44 +10,17 @@ class App extends Component {
 
     this.state = {
       inProgress: false,
-      role: "",
+      role: null,
       additional: null,
-      game: ""
+      game: null
     };
 
     this.socket = openSocket("http://localhost:8000");
 
-    this.socket.on("mafia-start", sock => {
+    this.socket.on("game", sock => {
       this.setState({
         inProgress: sock.inProgress,
         role: sock.role,
-        additional: sock.additional,
-        game: sock.game
-      });
-    });
-
-    this.socket.on("spyfall-start", sock => {
-      this.setState({
-        inProgress: sock.inProgress,
-        role: sock.role,
-        additional: sock.additional,
-        game: sock.game
-      });
-    });
-
-    this.socket.on("restart", sock => {
-      this.setState({
-        inProgress: sock.inProgress,
-        role: sock.role,
-        additional: sock.additional,
-        game: sock.game
-      });
-    });
-
-    this.socket.on("game-start", sock => {
-      this.setState({
-        inProgress: sock.inProgress,
-        role: null,
         additional: sock.additional,
         game: sock.game
       });

@@ -25,14 +25,14 @@ io.on("connection", socket => {
   });
 
   socket.on("get-progress", () => {
-    if (require("./routes").getGame() == "Mafia") {
-      socket.emit("game-start", {
+    if (require("./routes").getGame() === "Mafia") {
+      socket.emit("game", {
         inProgress: require("./routes").getProgress(),
         game: "Mafia",
         additional: clients
       });
     } else {
-      socket.emit("game-start", {
+      socket.emit("game", {
         inProgress: require("./routes").getProgress(),
         game: "Spyfall",
         additional: locations
