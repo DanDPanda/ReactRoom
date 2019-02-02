@@ -1,3 +1,9 @@
+/**
+ * This component displays the additional information based on the game.
+ * Mafia and no game displays the players
+ * Spyfall displays the location on the map.
+ */
+
 import React, { Component } from "react";
 import User from "../Display/DisplayChildren/UsersChildren/User";
 import Location from "./AdditionalChildren/Location";

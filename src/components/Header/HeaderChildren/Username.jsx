@@ -1,8 +1,11 @@
+/**
+ * This is the username that is displayed when the user is finished inputting their
+ * username.
+ */
+
 import React, { Component } from "react";
 
 class Username extends Component {
-  state = {};
-
   getUsername = () => {
     const usernameStyle = {
       cursor: "auto",

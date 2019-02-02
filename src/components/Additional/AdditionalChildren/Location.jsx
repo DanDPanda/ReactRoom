@@ -1,3 +1,7 @@
+/**
+ * This is how each location will be displayed.
+ */
+
 import React, { Component } from "react";
 
 class Location extends Component {

@@ -1,3 +1,7 @@
+/**
+ * Displays all the users online.
+ */
+
 import React, { Component } from "react";
 import User from "./UsersChildren/User";
 

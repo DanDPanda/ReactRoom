@@ -1,3 +1,8 @@
+/**
+ * This is the server.js. It handles the IO connections and keeps track of
+ * the sockets and clients along with additional game information.
+ */
+
 const express = require("express");
 const app = express();
 

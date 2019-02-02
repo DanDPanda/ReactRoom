@@ -1,3 +1,7 @@
+/**
+ * This is the component that users will use to input their username.
+ */
+
 import React, { Component } from "react";
 
 class UsernameForm extends Component {

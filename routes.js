@@ -1,3 +1,9 @@
+/**
+ * Routes.js maintains the routes to start and end the game.
+ *
+ * TODO: Issue #5!
+ */
+
 // Variables
 var inProgress = false;
 var currentGame = null;
