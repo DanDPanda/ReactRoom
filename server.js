@@ -60,13 +60,16 @@ io.on("connection", socket => {
   socket.on("disconnect", () => {
     if (socket.username != null) {
       console.log(socket.username + " has left the room.");
-      var i = clients.indexOf(clients.filter(c => c.socket === socket.id)[0]);
-      var j = sockets.indexOf(socket);
-      clients.splice(i, 1);
-      sockets.splice(j, i);
+      clients.splice(
+        clients.indexOf(clients.filter(c => c.socket === socket.id)[0]),
+        1
+      );
+      sockets.splice(sockets.indexOf(socket), 1);
       sockets.forEach(sock => {
         sock.emit("update-msg", { clients: clients });
       });
+    } else {
+      sockets.splice(sockets.indexOf(socket), 1);
     }
   });
 });
