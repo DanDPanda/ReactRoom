@@ -1,3 +1,9 @@
+/**
+ * The header class is the bar at the top of the screen.
+ * At the moment, the main function of this component is to allow users to
+ * view and input their usernames.
+ */
+
 import React, { Component } from "react";
 import UsernameForm from "./HeaderChildren/UsernameForm";
 import Username from "./HeaderChildren/Username";

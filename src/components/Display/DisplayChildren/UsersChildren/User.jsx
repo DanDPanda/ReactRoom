@@ -1,3 +1,7 @@
+/**
+ * This is how each user will be displayed.
+ */
+
 import React, { Component } from "react";
 
 class User extends Component {

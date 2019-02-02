@@ -1,3 +1,8 @@
+/**
+ * At  the moment, the App has three component parts.
+ * The header, the display, and the additional.
+ */
+
 import React, { Component } from "react";
 import Header from "./components/Header/Header";
 import Display from "./components/Display/Display";

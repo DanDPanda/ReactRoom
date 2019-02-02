@@ -1,3 +1,7 @@
+/**
+ * Displays the current's user's role when the game has started.
+ */
+
 import React, { Component } from "react";
 
 class Role extends Component {
