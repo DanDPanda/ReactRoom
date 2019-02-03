@@ -14,7 +14,7 @@ class Header extends Component {
 
     this.state = {
       valid: false,
-      username: "",
+      username: null,
       warning: false
     };
 
@@ -31,7 +31,7 @@ class Header extends Component {
     if (this.state.valid) {
       return <Username username={this.state.username} valid={true} />;
     } else if (this.props.inProgress) {
-      return <Username username="" valid={false} />;
+      return <Username valid={false} />;
     } else {
       return (
         <UsernameForm
