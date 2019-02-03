@@ -81,7 +81,7 @@ io.on("connection", socket => {
       data.username !== ""
     ) {
       socket.username = data.username;
-      clients.push({ username: data.username, role: "", socket: socket.id });
+      clients.push({ username: data.username, role: null, socket: socket.id });
       socket.emit("username-result", { valid: true });
       console.log(socket.username + " has joined the room.");
       sockets.forEach(sock => {

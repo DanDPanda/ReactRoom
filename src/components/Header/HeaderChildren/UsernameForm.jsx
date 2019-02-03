@@ -1,12 +1,13 @@
 /**
  * This is the component that users will use to input their username.
+ * It will disappear when the user inputs their name.
  */
 
 import React, { Component } from "react";
 
 class UsernameForm extends Component {
   state = {
-    value: "",
+    value: null,
     search: (
       <input
         className="form-control mr-sm-2"
