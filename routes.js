@@ -43,14 +43,12 @@ module.exports = {
     }
 
     function chooseRolesSpyfall(array) {
-      array = array.map((a, i) =>
-        i === 0 ? (a.role = "Spy") : (a.role = "Not Spy")
-      );
+      array.map((a, i) => (i === 0 ? (a.role = "Spy") : (a.role = "Not Spy")));
     }
 
     function sendToSockets(res, add) {
       sockets.forEach(sock => {
-        var temp = clients.filter((a, i) => a.socket === sock.id);
+        var temp = clients.filter(a => a.socket === sock.id);
         temp.length === 1
           ? sock.emit("game", {
               inProgress: inProgress,
