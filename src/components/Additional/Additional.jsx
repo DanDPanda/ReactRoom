@@ -9,6 +9,22 @@ import User from "../Display/DisplayChildren/UsersChildren/User";
 import Locations from "./AdditionalChildren/Locations";
 
 class Additional extends Component {
+  getSpy = () => {
+    const roleStyle = {
+      textAlign: "center",
+      marginBottom: "50px"
+    };
+    if (this.props.role === "Not Spy") {
+      return (
+        <p className="display-4" style={roleStyle}>
+          Location: {this.props.additional.location}
+        </p>
+      );
+    } else {
+      return null;
+    }
+  };
+
   getProgress = () => {
     const listStyle = {
       maxWidth: "25%",
@@ -30,17 +46,10 @@ class Additional extends Component {
       this.props.inProgress &&
       this.props.role != null
     ) {
-      const roleStyle = {
-        textAlign: "center",
-        marginTop: "100px",
-        marginBottom: "100px"
-      };
       return (
         <div>
-          <p className="display-1" style={roleStyle}>
-            Location:
-          </p>
-          {this.props.additional.map(location => (
+          {this.getSpy()}
+          {this.props.additional.locations.map(location => (
             <ul key={location} className="list-group" style={listStyle}>
               <Locations key={location} location={location} />
             </ul>
@@ -53,7 +62,7 @@ class Additional extends Component {
   };
 
   render() {
-    return <p>{this.getProgress()}</p>;
+    return this.getProgress();
   }
 }
 
