@@ -32,7 +32,7 @@ module.exports = {
     function chooseRolesMafia(array) {
       var mafias = Math.ceil(array.length / 6);
       var j = 0;
-      for (j = 0; j < mafias; j++) {
+      for (; j < mafias; j++) {
         array[j].role = "Mafia";
       }
       array[j].role = "Nurse";
