@@ -47,6 +47,7 @@ class App extends Component {
           additional={this.state.additional}
           inProgress={this.state.inProgress}
           game={this.state.game}
+          role={this.state.role}
         />
       </React.Fragment>
     );

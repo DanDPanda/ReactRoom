@@ -78,7 +78,8 @@ io.on("connection", socket => {
   socket.on("submit-username", data => {
     if (
       clients.filter(c => c.username === data.username).length === 0 &&
-      data.username !== ""
+      data.username !== "" &&
+      data.username !== null
     ) {
       socket.username = data.username;
       clients.push({ username: data.username, role: null, socket: socket.id });

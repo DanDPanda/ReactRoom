@@ -6,27 +6,56 @@
 
 import React, { Component } from "react";
 import User from "../Display/DisplayChildren/UsersChildren/User";
-import Location from "./AdditionalChildren/Location";
+import Locations from "./AdditionalChildren/Locations";
 
 class Additional extends Component {
+  getSpy = () => {
+    const roleStyle = {
+      textAlign: "center",
+      marginBottom: "50px"
+    };
+    if (this.props.role === "Not Spy") {
+      return (
+        <p className="display-4" style={roleStyle}>
+          Location: {this.props.additional.location}
+        </p>
+      );
+    } else {
+      return null;
+    }
+  };
+
   getProgress = () => {
     const listStyle = {
       maxWidth: "25%",
       margin: "auto",
-      textAlig: "center"
+      textAlign: "center"
     };
-    if (this.props.game === "Mafia" && this.props.inProgress) {
+    if (
+      this.props.game === "Mafia" &&
+      this.props.inProgress &&
+      this.props.role != null
+    ) {
       return this.props.additional.map(user => (
         <ul key={user.username} className="list-group" style={listStyle}>
           <User key={user.username} user={user.username} />
         </ul>
       ));
-    } else if (this.props.game === "Spyfall" && this.props.inProgress) {
-      return this.props.additional.map(location => (
-        <ul key={location} className="list-group" style={listStyle}>
-          <Location key={location} location={location} />
-        </ul>
-      ));
+    } else if (
+      this.props.game === "Spyfall" &&
+      this.props.inProgress &&
+      this.props.role != null
+    ) {
+      return (
+        <div>
+          {this.getSpy()}
+          {this.props.additional.locations.map(location => (
+            <ul key={location} className="list-group" style={listStyle}>
+              <Locations key={location} location={location} />
+            </ul>
+          ))}
+        </div>
+      );
     } else {
       return null;
     }

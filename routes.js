@@ -32,7 +32,7 @@ module.exports = {
     function chooseRolesMafia(array) {
       var mafias = Math.ceil(array.length / 6);
       var j = 0;
-      for (j = 0; j < mafias; j++) {
+      for (; j < mafias; j++) {
         array[j].role = "Mafia";
       }
       array[j].role = "Nurse";
@@ -43,29 +43,29 @@ module.exports = {
     }
 
     function chooseRolesSpyfall(array) {
-      array = array.map((a, i) =>
-        i === 0 ? (a.role = "Spy") : (a.role = "Not Spy")
-      );
+      array.map((a, i) => (i === 0 ? (a.role = "Spy") : (a.role = "Not Spy")));
     }
 
     function sendToSockets(res, add) {
+      // Sends a message to each socket
       sockets.forEach(sock => {
-        var temp = clients.filter((a, i) => a.socket === sock.id);
+        var temp = clients.filter(a => a.socket === sock.id);
         temp.length === 1
-          ? sock.emit("game", {
+          ? // This means they are a logged in player
+            sock.emit("game", {
               inProgress: inProgress,
               role: temp[0].role,
               game: currentGame,
               additional: add
             })
-          : sock.emit("game", {
+          : // This means they are not logged in
+            sock.emit("game", {
               role: null,
               inProgress: inProgress,
               additional: add,
               game: currentGame
             });
       });
-
       console.log("Game has started.");
       res.send("Game has started.");
     }
@@ -100,7 +100,10 @@ module.exports = {
         currentGame = "Spyfall";
         shuffleArray(clients);
         chooseRolesSpyfall(clients);
-        sendToSockets(res, locations);
+        sendToSockets(res, {
+          locations: locations,
+          location: locations[Math.floor(Math.random() * locations.length)]
+        });
       } else {
         console.log("Not enough players to start.");
         res.send("Not enough players to start.");
