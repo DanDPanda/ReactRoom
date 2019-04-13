@@ -5,8 +5,6 @@
  */
 
 import React, { Component } from "react";
-import User from "../Display/DisplayChildren/UsersChildren/User";
-import Locations from "./AdditionalChildren/Locations";
 
 class Additional extends Component {
   getSpy = () => {
@@ -31,14 +29,23 @@ class Additional extends Component {
       margin: "auto",
       textAlign: "center"
     };
+    const locationStyle = {
+      marginTop: "5px"
+    };
+    const userStyle = {
+      marginTop: "5px"
+    };
     if (
       this.props.game === "Mafia" &&
       this.props.inProgress &&
       this.props.role != null
     ) {
+      // If the game is mafia, return the list of users
       return this.props.additional.map(user => (
         <ul key={user.username} className="list-group" style={listStyle}>
-          <User key={user.username} user={user.username} />
+          <li className="list-group-item" style={userStyle}>
+            {user.username}
+          </li>
         </ul>
       ));
     } else if (
@@ -46,12 +53,15 @@ class Additional extends Component {
       this.props.inProgress &&
       this.props.role != null
     ) {
+      // If the game is spyfall, return the list of locations and the player's role
       return (
         <div>
           {this.getSpy()}
           {this.props.additional.locations.map(location => (
             <ul key={location} className="list-group" style={listStyle}>
-              <Locations key={location} location={location} />
+              <li className="list-group-item" style={locationStyle}>
+                {location}
+              </li>
             </ul>
           ))}
         </div>
