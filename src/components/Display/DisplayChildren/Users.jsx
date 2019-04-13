@@ -3,7 +3,6 @@
  */
 
 import React, { Component } from "react";
-import User from "./UsersChildren/User";
 
 class Users extends Component {
   constructor(props) {
@@ -30,9 +29,14 @@ class Users extends Component {
       margin: "auto",
       textAlign: "center"
     };
+    const userStyle = {
+      marginTop: "5px"
+    };
     return this.state.users.map(user => (
       <ul key={user.username} className="list-group" style={listStyle}>
-        <User key={user.username} user={user.username} />
+        <li className="list-group-item" style={userStyle}>
+          {user.username}
+        </li>
       </ul>
     ));
   }
