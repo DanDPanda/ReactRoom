@@ -7,6 +7,7 @@ import React, { Component } from "react";
 import Header from "./components/Header/Header";
 import Display from "./components/Display/Display";
 import Additional from "./components/Additional/Additional";
+import Buttons from "./components/Buttons/Buttons";
 import openSocket from "socket.io-client";
 
 class App extends Component {
@@ -49,6 +50,7 @@ class App extends Component {
           game={this.state.game}
           role={this.state.role}
         />
+        <Buttons socket={this.socket} inProgress={this.state.inProgress} />
       </React.Fragment>
     );
   }
