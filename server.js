@@ -49,7 +49,9 @@ const server = app.listen(port);
 const io = require("socket.io")(server);
 console.log("Listening to port", port);
 
-require("./routes").func(app, clients, sockets, locations);
+// Variables
+var inProgress = false;
+var currentGame = null;
 
 // On conncection
 io.on("connection", socket => {
@@ -60,15 +62,15 @@ io.on("connection", socket => {
   });
 
   socket.on("get-progress", () => {
-    if (require("./routes").getGame() === "Mafia") {
+    if (currentGame === "Mafia") {
       socket.emit("game", {
-        inProgress: require("./routes").getProgress(),
+        inProgress: inProgress,
         game: "Mafia",
         additional: clients
       });
     } else {
       socket.emit("game", {
-        inProgress: require("./routes").getProgress(),
+        inProgress: inProgress,
         game: "Spyfall",
         additional: locations
       });
@@ -93,16 +95,54 @@ io.on("connection", socket => {
     }
   });
 
-  socket.on("start-mafia", data => {
-    console.log(data.test);
+  socket.on("start-mafia", () => {
+    if (inProgress) {
+      console.log("Game already in progress.");
+    } else if (clients.length > 3) {
+      inProgress = true;
+      currentGame = "Mafia";
+      shuffleArray(clients);
+      chooseRolesMafia(clients);
+      sendToSockets(clients);
+    } else {
+      console.log("Not enough players to start.");
+    }
   });
 
-  socket.on("start-spyfall", data => {
-    console.log(data.test);
+  socket.on("start-spyfall", () => {
+    if (inProgress) {
+      console.log("Game already in progress.");
+    } else if (clients.length > 2) {
+      inProgress = true;
+      currentGame = "Spyfall";
+      shuffleArray(clients);
+      chooseRolesSpyfall(clients);
+      sendToSockets({
+        locations: locations,
+        location: locations[Math.floor(Math.random() * locations.length)]
+      });
+    } else {
+      console.log("Not enough players to start.");
+    }
   });
 
-  socket.on("end-game", data => {
-    console.log(data.test);
+  socket.on("end-game", () => {
+    if (inProgress) {
+      inProgress = false;
+      currentGame = null;
+      sockets.forEach(sock => {
+        sock.emit("game", {
+          clients: clients,
+          inProgress: inProgress,
+          role: null,
+          additional: null,
+          game: currentGame
+        });
+      });
+      console.log("Game has ended.");
+    } else {
+      console.log("There is no current game.");
+    }
   });
 
   socket.on("disconnect", () => {
@@ -120,4 +160,63 @@ io.on("connection", socket => {
       sockets.splice(sockets.indexOf(socket), 1);
     }
   });
+
+  // Helper Functions
+  function shuffleArray(array) {
+    var currentIndex = array.length,
+      temporaryValue,
+      randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+  }
+
+  function chooseRolesMafia(array) {
+    var mafias = Math.ceil(array.length / 6);
+    var j = 0;
+    for (; j < mafias; j++) {
+      array[j].role = "Mafia";
+    }
+    array[j].role = "Nurse";
+    array[j + 1].role = "Detective";
+    for (var i = j + 2; i < array.length; i++) {
+      array[i].role = "Civilian";
+    }
+  }
+
+  function chooseRolesSpyfall(array) {
+    array.map((a, i) => (i === 0 ? (a.role = "Spy") : (a.role = "Not Spy")));
+  }
+
+  function sendToSockets(add) {
+    // Sends a message to each socket
+    sockets.forEach(sock => {
+      var temp = clients.filter(a => a.socket === sock.id);
+      temp.length === 1
+        ? // This means they are a logged in player
+          sock.emit("game", {
+            inProgress: inProgress,
+            role: temp[0].role,
+            game: currentGame,
+            additional: add
+          })
+        : // This means they are not logged in
+          sock.emit("game", {
+            role: null,
+            inProgress: inProgress,
+            additional: add,
+            game: currentGame
+          });
+    });
+    console.log("Game has started.");
+  }
 });
