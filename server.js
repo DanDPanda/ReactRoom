@@ -93,6 +93,18 @@ io.on("connection", socket => {
     }
   });
 
+  socket.on("start-mafia", data => {
+    console.log(data.test);
+  });
+
+  socket.on("start-spyfall", data => {
+    console.log(data.test);
+  });
+
+  socket.on("end-game", data => {
+    console.log(data.test);
+  });
+
   socket.on("disconnect", () => {
     if (socket.username != null) {
       console.log(socket.username + " has left the room.");
