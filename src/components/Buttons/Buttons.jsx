@@ -13,7 +13,7 @@ class Buttons extends Component {
     const leftButton = {
       marginRight: "2.5px"
     };
-    if (this.props.inProgress) {
+    if (this.props.inProgress && this.props.username) {
       return (
         <div style={listStyle}>
           <button
@@ -26,7 +26,7 @@ class Buttons extends Component {
           </button>
         </div>
       );
-    } else {
+    } else if (this.props.inProgress === false && this.props.username) {
       return (
         <div style={listStyle}>
           <button
@@ -49,6 +49,8 @@ class Buttons extends Component {
           </button>
         </div>
       );
+    } else {
+      return null;
     }
   };
   render() {

@@ -18,7 +18,8 @@ class App extends Component {
       inProgress: false,
       role: null,
       additional: null,
-      game: null
+      game: null,
+      username: null
     };
 
     this.socket = openSocket("http://localhost:8000");
@@ -35,10 +36,20 @@ class App extends Component {
     this.socket.emit("get-progress");
   }
 
+  submitUsername = username => {
+    this.setState({ username: username });
+    this.socket.emit("submit-username", { username: username });
+  };
+
   render() {
     return (
       <React.Fragment>
-        <Header socket={this.socket} inProgress={this.state.inProgress} />
+        <Header
+          socket={this.socket}
+          inProgress={this.state.inProgress}
+          username={this.state.username}
+          submitUsername={this.submitUsername}
+        />
         <Display
           socket={this.socket}
           inProgress={this.state.inProgress}
@@ -50,7 +61,11 @@ class App extends Component {
           game={this.state.game}
           role={this.state.role}
         />
-        <Buttons socket={this.socket} inProgress={this.state.inProgress} />
+        <Buttons
+          socket={this.socket}
+          inProgress={this.state.inProgress}
+          username={this.state.username}
+        />
       </React.Fragment>
     );
   }

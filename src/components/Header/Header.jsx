@@ -14,7 +14,6 @@ class Header extends Component {
 
     this.state = {
       valid: false,
-      username: null,
       warning: false
     };
 
@@ -29,23 +28,18 @@ class Header extends Component {
 
   getForm = () => {
     if (this.state.valid) {
-      return <Username username={this.state.username} valid={true} />;
+      return <Username username={this.props.username} valid={true} />;
     } else if (this.props.inProgress) {
       return <Username valid={false} />;
     } else {
       return (
         <UsernameForm
-          submitUsername={this.submitUsername}
+          submitUsername={this.props.submitUsername}
           socket={this.props.socket}
           warning={this.state.warning}
         />
       );
     }
-  };
-
-  submitUsername = username => {
-    this.setState({ username: username });
-    this.props.socket.emit("submit-username", { username: username });
   };
 
   render() {

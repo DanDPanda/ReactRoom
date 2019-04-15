@@ -12,7 +12,6 @@ var sockets = [];
 
 // Spyfall Locations
 var locations = [
-  "School",
   "Hospital",
   "Mountain",
   "Beach",
